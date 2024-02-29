@@ -54,13 +54,17 @@ def play():
     print("This code hasn't been written yet!")
 
 def _update_button():
-    print("This code hasn't been written yet!")
+    clicked_btn.config(text=self._game.current_player.label)
+    clicked_btn.config(fg=self._game.current_player.color)
 
 def _update_display():
-    print("This code hasn't been written yet!")
+    self.display["text"] = msg
+    self.display["fg"] = color
 
 def _highlight_cells(self):
-    print("This code hasn't been written yet!")
+    for button, coordinates in self._cells.items():
+        if coordinates in self._game.winner_combo:
+            button.config(highlightbackground="red")
     
 def main():
     board = TicTacToeBoard()

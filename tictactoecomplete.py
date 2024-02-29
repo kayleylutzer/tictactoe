@@ -32,9 +32,9 @@ class TicTacToeGame:
     # MAKE SURE WE RESET THE MOVES
     def _setup_board(self):
         self._current_moves = [ # set empty moves - make array 
-            [Move(row=0,col=0), Move(row=0, col=1), Move(row=0, col=2)],
-            [Move(row=1,col=0), Move(row=1, col=1), Move(row=1, col=2)],
-            [Move(row=2,col=0), Move(row=2, col=1), Move(row=2, col=2)]
+            [Move(col=0,row=0), Move(col=0, row=1), Move(col=0, row=2)],
+            [Move(col=1,row=0), Move(col=1, row=1), Move(col=1, row=2)],
+            [Move(col=2,row=0), Move(col=2, row=1), Move(col=2, row=2)]
             # [Move(row, col) 
             # for col in range(3)]
             # for row in range(3)
@@ -45,12 +45,21 @@ class TicTacToeGame:
     # TELL THE GAME HOW SOMEONE CAN WIN
     def _get_winning_combos(self):
         rows = [
-            [(move.row, move.col) for move in row]
-            for row in self._current_moves
+            # [Move(row=0,col=0), Move(row=0,col=1), Move(row=0,col=1)],
+            [(0, 0), (0, 1), (0, 2)],
+            [(0, 1), (1, 1), (2, 1)], 
+            [(0, 2), (2, 1), (2, 2)]
+            # [(move.row, move.col) for move in row]
+            # for row in self._current_moves
         ]
+        # print(rows)
         winning_columns = [
-            [(move.row, move.col) for move in col]
-            for col in self._current_moves
+            [(0, 0), (1, 0), (2, 0)],
+            [(1, 0), (1, 1), (1, 2)], 
+            [(2, 0), (2, 1), (2, 2)]
+            
+            # [(move.row, move.col) for move in col]
+            # for col in self._current_moves
         ]
         # columns = [list(col) for col in zip(*rows)]
         first_diagonal = [(1,1), (2,2), (0,0)]
@@ -73,13 +82,13 @@ class TicTacToeGame:
         
     # MAKE SURE PLAYERS CAN'T SELECT THE SAME SQUARE AND NO ONE HAS WON YET
     def is_valid_move(self, move):
-        free_square = self._current_moves[move.row][move.col].label == ""
+        free_square = self._current_moves[move.col][move.row].label == ""
         no_winner = not self._has_winner
         return no_winner and free_square
     
     def check_if_someone_won(self, move):
         row, col = move.row, move.col
-        self._current_moves[row][col] = move
+        self._current_moves[col][row] = move
         for combo in self._winning_combos:
             results = set(
                 self._current_moves[n][m].label
@@ -155,7 +164,7 @@ class TicTacToeBoard(tk.Tk):
     def play(self, event):
         clicked_btn = event.widget #how we tell the game which button was clicked
         row, col = self._cells[clicked_btn]
-        new_move = Move(row, col, self._game.current_player.label)
+        new_move = Move(col, row, self._game.current_player.label)
         if self._game.is_valid_move(new_move):
             self._update_button(clicked_btn)
             self._game.check_if_someone_won(new_move)
