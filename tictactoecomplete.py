@@ -31,19 +31,15 @@ class TicTacToeGame:
 
     # MAKE SURE WE RESET THE MOVES
     def _setup_board(self):
-        self._current_moves = [ # set empty moves
-            # [Move(row=0,col=0)],
-            # [Move(row=0,col=1)],
-            # [Move(row=0,col=2)],
-            # [Move(row=1,col=0)],
-            # [Move(row=1,col=1)],
-            # [Move(row=1,col=2)],
-            # [Move(row=2,col=0)],
-            # [Move(row=2,col=1)],
-            # [Move(row=2,col=2)]
-            [Move(row, col) for col in range(3)]
-            for row in range(3)
+        self._current_moves = [ # set empty moves - make array 
+            [Move(row=0,col=0), Move(row=0, col=1), Move(row=0, col=2)],
+            [Move(row=1,col=0), Move(row=1, col=1), Move(row=1, col=2)],
+            [Move(row=2,col=0), Move(row=2, col=1), Move(row=2, col=2)]
+            # [Move(row, col) 
+            # for col in range(3)]
+            # for row in range(3)
         ]
+        # print(self._current_moves)
         self._winning_combos = self._get_winning_combos()
 
     # TELL THE GAME HOW SOMEONE CAN WIN
@@ -52,10 +48,16 @@ class TicTacToeGame:
             [(move.row, move.col) for move in row]
             for row in self._current_moves
         ]
-        columns = [list(col) for col in zip(*rows)]
-        first_diagonal = [row[i] for i, row in enumerate(rows)]
-        second_diagonal = [col[j] for j, col in enumerate(reversed(columns))]
-        return rows + columns + [first_diagonal, second_diagonal]
+        winning_columns = [
+            [(move.row, move.col) for move in col]
+            for col in self._current_moves
+        ]
+        # columns = [list(col) for col in zip(*rows)]
+        first_diagonal = [(1,1), (2,2), (0,0)]
+        # first_diagonal = [row[i] for i, row in enumerate(rows)]
+        # second_diagonal = [col[j] for j, col in enumerate(reversed(winning_columns))]
+        second_diagonal = [(0,2), (1,1), (2,0)]
+        return rows + winning_columns + [first_diagonal, second_diagonal]
 
         # winning_rows = [
         #     [(move.row, move.col) for move in row]
